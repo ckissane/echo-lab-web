@@ -268,10 +268,10 @@ vixel.display();
       vixel.set(
         xyziT.x,xyziT.z,size.y-xyziT.y-1,
         {
-          red: VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2+0.5:1,
-          green:VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?0:1,
-          blue:VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2+0.5:1,
-          transparent:VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?1-Math.floor(Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])*8)/8:1
+          red: Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2+Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
+          green:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
+          blue:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
+          transparent:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?(1-Math.floor(Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])*8)/8)/2+0.5:1
         }
       );
       soundVoxels.push(xyziT);
@@ -284,10 +284,10 @@ vixel.display();
     vixel.set(
       xyziT.x,xyziT.z,size.y-xyziT.y-1,
       {
-        red: VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2+0.5:1,
-        green:VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?0:1,
-        blue:VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2+0.5:1,
-        transparent:VELOCITY[xyziT.x][xyziT.y][xyziT.z]>1/8?1-Math.floor(Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])*8)/8:1
+        red: Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2+Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
+        green:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
+        blue:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
+        transparent:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?(1-Math.floor(Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])*8)/8)/2+0.5:1
       }
     );
   }
