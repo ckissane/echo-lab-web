@@ -2,12 +2,14 @@
   "name": "echo-lab-web",
   "version": "1.0.0",
   "scripts": {
-    "dev": "parcel serve src/index.html"
+    "dev": "parcel serve src/index.html",
+    "build": "cross-env NODE_ENV=development parcel build src/index.html —-no-minify"
   },
   "dependencies": {
     "assets": "^3.0.1",
     "axios": "^0.21.0",
     "bro-fs": "^0.6.0",
+    "cross-env": "^7.0.2",
     "gpu.js": "^2.10.3",
     "parcel-bundler": "^1.12.4",
     "vixel": "^1.0.1",
