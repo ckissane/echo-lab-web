@@ -41,12 +41,12 @@ document.body.appendChild(vcanvas);
     Math.PI / 4 // Field of view
   );
   const solveScottA = gpu
-    .createKernel(`function (
-      a,
-      b,
-      c,
-      d,
-      R
+    .createKernel(function (
+      a: number[][][],
+      b: number[][][],
+      c: number[][][],
+      d: number[][][],
+      R: number
     ) {
       let cB =
         (R / c[this.thread.z][this.thread.y][this.thread.x]) *
@@ -54,17 +54,17 @@ document.body.appendChild(vcanvas);
       let nR = cB + a[this.thread.z][this.thread.y][this.thread.x]; //cA + dt * (diffA * lapA - cA * cB * cB + f * (1 - cA));
      
       return nR * 0.999;
-    }`)
+    })
     // .setPipeline(true)
     // .setImmutable(true)
     .setOutput([size.z, size.y, size.x]);
   const solveScottB = gpu
-    .createKernel(`function(
-      a,
-      b,
-      c,
-      d,
-      R
+    .createKernel(function (
+      a: number[][][],
+      b: number[][][],
+      c: number[][][],
+      d: number[][][],
+      R: number
     ) {
       let lapA = 0;
       for (let i = -1; i <= 1; i++) {
@@ -97,11 +97,23 @@ document.body.appendChild(vcanvas);
           }
         }
       }
+      // lapA -= a[this.thread.z][this.thread.y][this.thread.x] * 6;
+      // lapA *= 1 / 6;
+      // let cA = a[this.thread.z][this.thread.y][this.thread.x];
       let cB = b[this.thread.z][this.thread.y][this.thread.x];
       let nR = cB + R * d[this.thread.z][this.thread.y][this.thread.x] * lapA; //cA + dt * (diffA * lapA - cA * cB * cB + f * (1 - cA));
-      
+      // let X = this.thread.z - 128 / 2;
+      // let Y = this.thread.y - 128 / 2;
+      // let Z = this.thread.x - 128 / 2;
+
+      // if (Math.sqrt((X)**2+Y**2+0*Z**2)>128/2-4) {
+      //   nR = fB;
+      // }
+      // if (Math.sqrt((X)**2+Y**2)<128/4) {
+      //   nR =0.5;
+      // }
       return nR;
-    }`)
+    })
     .setConstants({ size_x: size.x, size_y: size.y, size_z: size.z })
     // .setPipeline(true)
     // .setImmutable(true)
@@ -176,7 +188,7 @@ vixel.display();
   // }
 
   const render = gpu
-    .createKernel(`function (a, b, id) {
+    .createKernel(function (a: number[][][], b: number[][][], id: number) {
       let sm = 0;
       let dst = 128;
       let idx = Math.floor(id);//(tim / 1000 * 128) % 127.5);
@@ -210,7 +222,7 @@ vixel.display();
         (dst / this.constants.size_y) * (1 - I)+O,
         1
       );
-    }`)
+    })
     .setConstants({ size_x: size.x, size_y: size.y, size_z: size.z })
     .setOutput([size.x, size.z])
     .setGraphical(true);
