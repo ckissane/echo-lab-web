@@ -2,7 +2,7 @@
   "name": "echo-lab-web",
   "version": "1.0.0",
   "scripts": {
-    "dev":"parcel serve src/index.html"
+    "dev": "parcel serve src/index.html"
   },
   "dependencies": {
     "assets": "^3.0.1",
@@ -10,6 +10,7 @@
     "bro-fs": "^0.6.0",
     "gpu.js": "^2.10.3",
     "parcel-bundler": "^1.12.4",
+    "vixel": "^1.0.1",
     "vox-reader": "^2.0.3"
   },
   "devDependencies": {
