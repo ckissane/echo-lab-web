@@ -16,6 +16,8 @@ const gpu = new GPU();
 const rangeSlider=document.getElementById("depth") as HTMLInputElement;
 const DENSITY_AIR = 1.225;
 const K_AIR = 144120.0;
+const simpleRender=window.location.hash.includes("simple")|| !window.location.hash.includes("fancy");
+const fancyRender=window.location.hash.includes("fancy")|| !window.location.hash.includes("simple");
 function start(data) {
   console.log(data, data.size,data.matl,data.imap);
   rangeSlider.min="0";
@@ -243,14 +245,15 @@ vixel.display();
     requestAnimationFrame(update);
   }
  const gogo=() => {
-    let v= rangeSlider.valueAsNumber;
-    document.getElementById("depth-disp").innerText=v+"";
-    if(oldV!==v ||soundVoxels.length===0){
-      oldV=v;
+    let vo= Math.floor(rangeSlider.valueAsNumber);
+    document.getElementById("depth-disp").innerText=vo+"";
+    if(fancyRender){
+    if(oldV!==vo ||soundVoxels.length===0){
+      oldV=vo;
     for(let i=0;i<soundVoxels.length;i++){
       let xyziT=soundVoxels[i];
       vixel.unset(
-        xyziT.x,xyziT.z,size.y-xyziT.y-1,
+        xyziT.x,xyziT.z,size.y-xyziT.y-1
         // {
         //   red: 1,
         //   green:0,
@@ -263,7 +266,7 @@ vixel.display();
     soundVoxels=[];
     for(let i=0;i<size.x;i++){
       for(let j=0;j<size.z;j++){
-      let xyziT={x:i,y:Math.floor(v),z:j};
+      let xyziT={x:i,y:Math.floor(vo),z:j};
       if(DENSITY[xyziT.x][xyziT.y][xyziT.z]<500){
       vixel.set(
         xyziT.x,xyziT.z,size.y-xyziT.y-1,
@@ -298,9 +301,13 @@ vixel.display();
   
   // Show the result on the canvas
   vixel.display();
-    render(DENSITY, VELOCITY, v);
-    c2.width = size.x;
-    c2.height = size.z;
+  }
+  if(simpleRender){
+    render(DENSITY, VELOCITY, vo);
+  }
+  
+  c2.width = size.x;
+  c2.height = size.z;
     
     vcanvas.width = size.x*4;
     vcanvas.height = size.z*4;
