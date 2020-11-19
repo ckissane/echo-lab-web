@@ -7,9 +7,12 @@
 </head>
 <body>
     <!-- <canvas id="c"></canvas> -->
-    <span>Sound Crosssection Depth:<span id="depth-disp"></span></span>
+    <span>Sound Crosssection Depth (changing freezes fancy):<span id="depth-disp"></span></span>
     <br/>
     <input type="range" id="depth" value="0"/>
+    <a href="#simple" onclick="location.hash='simple';location.reload()">Simple Only</a>
+    <a href="#fancy" onclick="location.hash='fancy';location.reload()">Fancy Only</a>
+    <a href="#" onclick="location.hash='';location.reload()">Both</a>
     <br/>
     <script src="ts/main.ts"></script>
     <style>

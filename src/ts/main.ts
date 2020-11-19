@@ -226,7 +226,7 @@ vixel.display();
   (window as any).v = 0;
   function update() {
     for (let q = 0; q < 1; q++) {
-      POSITION[speakers[0].x][speakers[0].y][speakers[0].z] =Math.sin((window as any).v/440*Math.PI*2)*Math.max(1-(window as any).v/100,0);
+      POSITION[speakers[0].x][speakers[0].y][speakers[0].z] =Math.sin((window as any).v/44100*440*Math.PI*2)*Math.max(1-(window as any).v/44100*440/1,0);
       const nA = solveScottA(POSITION, VELOCITY, DENSITY, K, R);
       
       POSITION.delete && POSITION.delete();
@@ -264,37 +264,36 @@ vixel.display();
     }
   
     soundVoxels=[];
+    
     for(let i=0;i<size.x;i++){
       for(let j=0;j<size.z;j++){
       let xyziT={x:i,y:Math.floor(vo),z:j};
       if(DENSITY[xyziT.x][xyziT.y][xyziT.z]<500){
-      vixel.set(
-        xyziT.x,xyziT.z,size.y-xyziT.y-1,
-        {
-          red: Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2+Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
-          green:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
-          blue:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
-          transparent:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?(1-Math.floor(Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])*8)/8)/2+0.5:1
-        }
-      );
+      
       soundVoxels.push(xyziT);
       }
     }
   }
-}else{
+}
   for(let i=0;i<soundVoxels.length;i++){
     let xyziT=soundVoxels[i];
+    
+    let VQ=VELOCITY[xyziT.x][xyziT.y][xyziT.z];
+    
+    let PQ=POSITION[xyziT.x][xyziT.y][xyziT.z];
+    let PSD=R*R/DENSITY[xyziT.x][xyziT.y][xyziT.z]*K[xyziT.x][xyziT.y][xyziT.z];
+    let Q=Math.sign(VQ)*Math.sqrt(1/PSD*VQ*VQ+PQ*PQ)/44100*440;//VELOCITY[xyziT.x][xyziT.y][xyziT.z];
     vixel.set(
       xyziT.x,xyziT.z,size.y-xyziT.y-1,
       {
-        red: Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2+Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
-        green:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
-        blue:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?1/2-Math.sign(VELOCITY[xyziT.x][xyziT.y][xyziT.z])/2:1,
-        transparent:Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])>1/8?(1-Math.floor(Math.abs(VELOCITY[xyziT.x][xyziT.y][xyziT.z])*8)/8)/2+0.5:1
+        red: Math.abs(Q)>1/8?1/2+Math.sign(Q)/2:1,
+        green:Math.abs(Q)>1/8?1/2-Math.sign(Q)/2:1,
+        blue:Math.abs(Q)>1/8?1/2-Math.sign(Q)/2:1,
+        transparent:Math.abs(Q)>1/8?(1-Math.floor(Math.abs(Q)*8)/8)/2+0.5:1
       }
     );
   }
-}
+
     // vixel.sun(1000, 10, 0.1,1);
     // Take 1024 path traced samples per pixel
   vixel.sample(64);
