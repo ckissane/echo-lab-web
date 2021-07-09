@@ -10,7 +10,7 @@
     "axios": "^0.21.0",
     "bro-fs": "^0.6.0",
     "cross-env": "^7.0.2",
-    "gpu.js": "^2.10.3",
+    "gpu.js": "^2.11.3",
     "parcel-bundler": "^1.12.4",
     "vixel": "^1.0.1",
     "vox-reader": "^2.0.3"
